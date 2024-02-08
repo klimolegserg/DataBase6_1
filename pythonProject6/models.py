@@ -1,4 +1,4 @@
-from sqlalchemy import Column, Integer, String, ForeignKey, Date
+from sqlalchemy import Column, Integer, String, ForeignKey, Date, Numeric
 
 from sqlalchemy.orm import declarative_base, relationship
 
@@ -33,6 +33,7 @@ class Stock(Base):
     id = Column(Integer, primary_key=True)
     book_id = Column(Integer, ForeignKey(Book.id), nullable=False)
     shop_id = Column(Integer, ForeignKey(Shop.id), nullable=False)
+    count = Column(Integer, nullable=False)
 
     book = relationship(Book, backref='stock')
     shop = relationship(Shop, backref='stock')
@@ -41,7 +42,7 @@ class Stock(Base):
 class Sale(Base):
     __tablename__ = 'sale'
     id = Column(Integer, primary_key=True)
-    price = Column(Integer, nullable=False)
+    price = Column(Numeric(5,2), nullable=False)
     date_sale = Column(Date, nullable=False)
     stock_id = Column(Integer, ForeignKey(Stock.id), nullable=False)
     count = Column(Integer, nullable=False)
@@ -50,6 +51,7 @@ class Sale(Base):
 
 
 def create_tables(engine):
+    Base.metadata.drop_all(engine)
     Base.metadata.create_all(engine)
 
 

@@ -1,8 +1,11 @@
 import sqlalchemy
+import configparser
 from sqlalchemy.orm import sessionmaker
 from models import create_tables
 
-DSN = 'postgresql://postgres:Python2023@localhost:5432/second'
+config = configparser.ConfigParser()
+config.read('settings.ini')
+DSN = config['token']['dsn']
 engine = sqlalchemy.create_engine(DSN)
 
 Session = sessionmaker(bind=engine)
